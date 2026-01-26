@@ -24,8 +24,7 @@ class PaymentRequest(BaseModel):
         min_length=3, max_length=3, pattern=r'^[A-Z]+$',
         description="3 characters, ISO currency code (e.g. GBP, USD)"
     )
-    amount: int = Field(
-        ge=1,
+    amount: str = Field(
         description="Amount in cents, $0.01 would be supplied as 1"
     )
 
@@ -50,8 +49,7 @@ class PaymentResponse(BaseModel):
         min_length=3, max_length=3, pattern=r'^[A-Z]+$',
         description="3 characters, ISO currency code"
     )
-    amount: int = Field(
-        ge=1,
+    amount: str = Field(
         description="Amount in cents, $0.01 would be supplied as 1"
     )
 
@@ -75,9 +73,9 @@ class PaymentRequestValidator:
     
     @staticmethod
     def validate_card_expiration_date(card_expiration_month: str, card_expiration_year: str) -> bool:
-        if card_expiration_year < datetime.now().year:
+        if int(card_expiration_year) < datetime.now().year:
             return False
-        if card_expiration_year == datetime.now().year and card_expiration_month < datetime.now().month:
+        if int(card_expiration_year) == datetime.now().year and int(card_expiration_month) < datetime.now().month:
             return False
         return True
     
@@ -87,8 +85,8 @@ class PaymentRequestValidator:
         return pycountry.currencies.get(alpha_3=currency) is not None
     
     @staticmethod
-    def validate_amount(amount: int) -> bool:
-        return amount >= 1
+    def validate_amount(amount: str) -> bool:
+        return int(amount) >= 1
     
     @staticmethod
     def validate_payment_request(payment_request: PaymentRequest) -> bool:

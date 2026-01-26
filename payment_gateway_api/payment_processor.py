@@ -34,9 +34,21 @@ class PaymentProcessor:
 
         # STEP 2: Process the payment
         try:
+            # Convert PaymentRequest to bank simulator format
+            # Bank simulator expects: card_number, expiry_date (MM/YYYY), currency, amount, cvv
+            mm = str(int(payment_request.card_expiration_month)).zfill(2)
+            yyyy = payment_request.card_expiration_year
+            bank_payload = {
+                "card_number": payment_request.card_number,
+                "expiry_date": f"{mm}/{yyyy}",
+                "currency": payment_request.currency,
+                "amount": int(payment_request.amount),  # Convert to int for bank simulator
+                "cvv": payment_request.card_cvv
+            }
+            
             response = httpx.post(
                 BANK_ENDPOINT,
-                json=payment_request.model_dump()
+                json=bank_payload
             )
             data = response.json()
             auth = data.get("authorized")

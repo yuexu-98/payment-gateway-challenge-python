@@ -39,15 +39,15 @@ async def create_payment(payment_request: PaymentRequest) -> PaymentResponse:
 """
 This endpoint is used to get the details of a payment.
 Parameters:
-- payment_id: str
+- payment_id: str (query parameter)
 Returns:
 - PaymentResponse
 Exceptions:
 - HTTPException: 500 Internal Server Error
 - Exception: Any other exception
 """
-# GET /payments/{payment_id}
-@app.get("/payments/{payment_id}")
+# GET /payments?payment_id={payment_id}
+@app.get("/payments")
 async def get_payment(payment_id: str) -> PaymentResponse:
     try:
         return PaymentProcessor.get_payment_details(payment_id)
