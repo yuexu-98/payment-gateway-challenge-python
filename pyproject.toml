@@ -6,7 +6,7 @@ authors = ["Author <author@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<3.13"
 uvicorn = "^0.17.6"
 gunicorn = "^20.1.0"
 fastapi = "^0.103.2"
@@ -15,6 +15,7 @@ fastapi = "^0.103.2"
 pytest = "^6.2.4"
 requests = "^2.31.0"
 httpx = "^0.25.0"
+pycountry = "^24.6.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
