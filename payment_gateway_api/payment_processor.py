@@ -53,7 +53,7 @@ class PaymentProcessor:
             data = response.json()
             auth = data.get("authorized")
             auth_code = data.get("authorization_code")
-            if auth is None or auth_code is None:
+            if auth is None or auth_code is None or auth_code == "":
                 raise ValueError(f"Bank simulator returned an error: {data.get('error')}")
 
             # Use authorization_code as payment_id, or generate one if not provided
